@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+@import url("Sections/header.css");
+
+:root {
+    --poppins: "Poppins", sans-serif;
+
+    --bgColor: #121212;
+    --textColor: #FFF;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: var(--poppins);
+}
+
+body {
+    height: 100vh;
+    background-color: var(--bgColor);
+    margin-top: 2vh;
+}
+
+li {
+    list-style: none;
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: #FFF;
+    font-size: 1rem;
+}
+
+a:hover {
+    color: crimson;
+}
+
+
+.search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: #222;        
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+    transition: width 0.5s ease;
+    overflow: hidden;
+    padding: 5px;             
+    border: 2px solid red; 
+    box-sizing: border-box;
+    top: 50%;
+    right: 1%;
+}
+
+
+.search:hover, 
+.search:focus-within {
+    width: 300px;
+}
+
+#movie-name {
+    flex: 1;                 
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0 15px;
+    font-size: 14px;
+    color: white;         
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.search:hover #movie-name,
+.search:focus-within #movie-name {
+    opacity: 1;
+}
+
+#search-btn {
+    min-width: 35px;     
+    height: 35px;
+    border: none;
+    background: #222;       
+    border-radius: 50%;      
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 2;       
+    flex-shrink: 5;       
+}
+
+#search-btn img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);      
+}
+
+
+.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 20px;
+
+}
+
+.cover {
+    position: relative;
+    width: 90%;
+    height: 80vh;
+    margin-top: 20px;
+    border-radius: 30px;
+    overflow: hidden;
+    left: 65px;
+}
+
+.text {
+position: absolute;
+top: 50%;
+left: 25%;
+right: 30%;
+transform: translate(-50%, -50%);
+color: white;
+font-size: 24px;
+text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
+
+.text h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+}
+
+.text p {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 600px;
+}
