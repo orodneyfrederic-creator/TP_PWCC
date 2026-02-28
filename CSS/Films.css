@@ -261,8 +261,8 @@ footer .footer-li {
     margin-top: 80vh;
     height: 200px;
     max-width: 1200px;
-    margin: 20px auto;
-    display: inline-flex;
+    margin: 30px auto;
+    display: inline;
     align-items: center;
     justify-content: center;
     background-color: black;
@@ -271,7 +271,8 @@ footer .footer-li {
 footer .footer-li ul {
     display: inline-flex;
     justify-content: center;
-    margin-top: -30vh;
+    margin-top: 2vh;
+    margin-bottom: 50vh;
     gap: 50px;
 }
 
