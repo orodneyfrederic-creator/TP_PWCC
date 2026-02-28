@@ -21,14 +21,29 @@
 
 
     console.log("Quelqu'un appelle le chemin :", pathname);
+    
     console.log("Avec ces paramètres :", queryData);
 
-    // Pour ne pas que mon navigateur tourne dans le vide 
+    
+    if (pathname === "/api/test" && req.method === "GET") // verifie l'addresse et recupère des infos
+    
+{ 
+    res.writeHead ( 200,{  "content-Type": "application/json" }); // code succès données en Json
 
+    res.end(JSON.stringify ({ message: " API fonctionne"})); // envoi la données et ferme la connexion
+
+    return;
+}
+
+    // Pour ne pas que mon navigateur tourne dans le vide 
+    
     res.end ("Bien reçu !");
 });
-
-// Ecoute du serveur sur le port 3000
+    
+    // Ecoute du serveur sur le port 3000
 server.listen(3000, () => {
     console.log("Le serveur est lancé sur le port 3000 de http://localhost:3000");
-})
+});
+
+
+
