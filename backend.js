@@ -2,6 +2,11 @@
 require('dotenv').config();
 
 
+// On recupère la clé d'API TMDB 
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const BASE_URL = "https://api.themoviedb.org/3";
+
+
 //  * IMPORTATION DES MODULES NATIFS
 
 const http = require('http'); // Gestion du protocole HTTP
@@ -10,7 +15,7 @@ const url = require('url');   // Analyse des chaînes d'URL
 
 //  * CONFIGURATION ET CRÉATION DU SERVEUR
 
-const server = http.createServer((req, res) => {
+const server = http.createServer( async(req, res) => {
     
     // Analyse de la requête entrante
     const parsedUrl = url.parse(req.url, true);
@@ -52,6 +57,51 @@ const server = http.createServer((req, res) => {
 
    
     //  * ROUTAGE DE L'API
+
+    // Route 1 : Tendance pour l'acceuil et l'infinite scroll
+
+    if (pathname === "/api/trending" && req.method === "GET") {
+        try{
+            const page = queryData.page || 1 ;
+            const response = await fetch(`${ BASE_URL }/trending/movie/week?api_key=${ TMDB_API_KEY }&language=fr-FR&page=${ page }`);
+            const data = await response.json();
+
+
+            res.writeHead(200, headers);
+            res.end(JSON.stringify(data));
+        } catch (error) {
+            res.writeHead(500, headers);
+            res.end(JSON.stringify({error: "Erreur lors de la récupération des tendances"}));
+        }
+        return;
+
+    }
+
+
+    // Route 2 : Recherche de films par mot-clé
+
+    if (pathname === "/api/search" && req.method === "GET") {
+        try {
+            const searchTerm = queryData.q;
+            const page = queryData.page || 1;
+
+            if (!searchTerm) {
+                res.writeHead(400, headers);
+                res.end(JSON.stringify({ error: "Recherche vide" }));
+                return;
+            }
+
+            const response = await fetch(`${ BASE_URL }/search/movie?api_key=${ TMDB_API_KEY }&language=fr-FR&query=${ encodeURIComponent(searchTerm) }&page=${ page }`);
+            const data = await response.json();
+
+            res.writeHead(200, headers);
+            res.end(JSON.stringify(data));
+        } catch (error) {
+            res.writeHead(500, headers);
+            res.end(JSON.stringify({ error: "Erreur lors de la recherche de films" }));
+        }
+        return;
+    }
      
 
     // Route de test : Vérification de la disponibilité du service
