@@ -1,12 +1,15 @@
-/**
- * IMPORTATION DES MODULES NATIFS
- */
+// Chargement des variables d'environnement depuis le fichers .env (pour la clé API TMDB)
+require('dotenv').config();
+
+
+//  * IMPORTATION DES MODULES NATIFS
+
 const http = require('http'); // Gestion du protocole HTTP
 const url = require('url');   // Analyse des chaînes d'URL
 
-/**
- * CONFIGURATION ET CRÉATION DU SERVEUR
- */
+
+//  * CONFIGURATION ET CRÉATION DU SERVEUR
+
 const server = http.createServer((req, res) => {
     
     // Analyse de la requête entrante
@@ -18,10 +21,10 @@ const server = http.createServer((req, res) => {
     // Extraction des paramètres de recherche (Query string)
     const queryData = parsedUrl.query;
 
-    /**
-     * CONFIGURATION DES HEADERS (CORS & CONTENT-TYPE)
-     * Autorise les requêtes provenant d'origines différentes (Front-end externe)
-     */
+   
+    //  * CONFIGURATION DES HEADERS (CORS & CONTENT-TYPE)
+    //  * Autorise les requêtes provenant d'origines différentes (Front-end externe)
+    
     const headers = {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
@@ -29,10 +32,15 @@ const server = http.createServer((req, res) => {
         "Access-Control-Allow-Headers": "Content-Type"
     };
 
-    /**
-     * GESTION DU PREFLIGHT (MÉTHODE OPTIONS)
-     * Réponse automatique aux vérifications de sécurité des navigateurs
-     */
+
+    
+
+    
+    //  * GESTION DU PREFLIGHT (MÉTHODE OPTIONS)
+    //  * Réponse automatique aux vérifications de sécurité des navigateurs
+     
+
+
     if (req.method === "OPTIONS") {
         res.writeHead(204, headers);
         res.end();
@@ -42,9 +50,9 @@ const server = http.createServer((req, res) => {
     // Journalisation des requêtes reçues pour le débogage
     console.log(`[LOG] Requête : ${req.method} ${pathname}`);
 
-    /**
-     * ROUTAGE DE L'API
-     */
+   
+    //  * ROUTAGE DE L'API
+     
 
     // Route de test : Vérification de la disponibilité du service
     if (pathname === "/api/test" && req.method === "GET") { 
@@ -57,10 +65,10 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    /**
-     * GESTION DES ERREURS 404
-     * Exécutée si aucun chemin ne correspond aux routes définies
-     */
+    
+    //  * GESTION DES ERREURS 404
+    //  * Exécutée si aucun chemin ne correspond aux routes définies
+     
     res.writeHead(404, headers);
     res.end(JSON.stringify({ 
         error: "Ressource non trouvée",
@@ -68,9 +76,9 @@ const server = http.createServer((req, res) => {
     }));
 });
 
-/**
- * DÉMARRAGE DU SERVEUR
- */
+
+//  * DÉMARRAGE DU SERVEUR
+ 
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`===============================================`);
