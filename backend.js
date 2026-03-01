@@ -1,103 +1,81 @@
-// On appel le module natif http qui prendra en charge ce que le front reçoit et ce qu'il envoit au backend
-    const { on } = require('cluster');
-const http = require('http');
+/**
+ * IMPORTATION DES MODULES NATIFS
+ */
+const http = require('http'); // Gestion du protocole HTTP
+const url = require('url');   // Analyse des chaînes d'URL
 
- // il est utilisé afin d'analyser les requêtes plus facilement
-    const url = require('url'); 
+/**
+ * CONFIGURATION ET CRÉATION DU SERVEUR
+ */
+const server = http.createServer((req, res) => {
     
-    // pour stocker les favories
-    let favorites = [];
-
-//  Crétion de mon server Javascript
-    const server = http.createServer ((req ,res) => {   
-
-    // Analyse de l'URL qui arrive
+    // Analyse de la requête entrante
     const parsedUrl = url.parse(req.url, true);
     
-
-    // extraire le chemin d'accès
-    const pathname = parsedUrl.pathname ;
+    // Normalisation du chemin (suppression des slashs finaux)
+    const pathname = parsedUrl.pathname.replace(/\/+$/, '') || '/';
     
-
-    //extraire les paramètres de la requête
+    // Extraction des paramètres de recherche (Query string)
     const queryData = parsedUrl.query;
 
+    /**
+     * CONFIGURATION DES HEADERS (CORS & CONTENT-TYPE)
+     * Autorise les requêtes provenant d'origines différentes (Front-end externe)
+     */
+    const headers = {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type"
+    };
 
-    console.log("Quelqu'un appelle le chemin :", pathname);
-    
-    console.log("Avec ces paramètres :", queryData);
-
-    
-    if (pathname === "/api/test" && req.method === "GET") // verifie l'addresse et recupère des infos
-    
-{ 
-    res.writeHead ( 200,{  "Content-Type":"application/json" }); // code succès données en Json
-
-   
-    res.end(JSON.stringify ({ message: " API fonctionne"})); // envoi la données et ferme la connexion
-    return
+    /**
+     * GESTION DU PREFLIGHT (MÉTHODE OPTIONS)
+     * Réponse automatique aux vérifications de sécurité des navigateurs
+     */
+    if (req.method === "OPTIONS") {
+        res.writeHead(204, headers);
+        res.end();
+        return;
     }
 
-    // ici tout sur les favories
+    // Journalisation des requêtes reçues pour le débogage
+    console.log(`[LOG] Requête : ${req.method} ${pathname}`);
 
-    // obtenir des favoris
+    /**
+     * ROUTAGE DE L'API
+     */
 
-    if (pathname === "/api/favorites") 
-        {
-            if (req.method === "GET")
-                {
-                    res.writeHead (200,{"Content-Type":"application/json"} )
-                    res.end (JSON.stringify(favorites))
-                    return
-                }
-    
+    // Route de test : Vérification de la disponibilité du service
+    if (pathname === "/api/test" && req.method === "GET") { 
+        res.writeHead(200, headers);
+        res.end(JSON.stringify({ 
+            status: "success", 
+            message: "Service API CineVerse opérationnel",
+            timestamp: new Date().toISOString()
+        }));
+        return;
+    }
 
-    // envoie les données des favoris dans le corps
-    
-            if (req.method === "POST")
-                {
-                    let body = "";
-                    req.on("data",chunk =>
-                        { 
-                            body += chunk.toString();   // envoie un Post et les données arrive en chunks   chunks veut dir morceau
-                        });
-        
-                    req.on("end",() => 
-                        {
-                            const newFavorite = JSON.parse(body);   //la toutes les donnés sont recus
-                            favorites.push(newFavorite);
-
-                            res.writeHead (201,{ "Content-Type":"application/json"})
-                            res.end(JSON.stringify({message:"ajouté au favoris"}))
-                            
-                        })
-                }return;
-            }
-
-        // suprimer les favoris
-if (pathname.startsWith("/api/favorites/") && req.method === "DELETE") 
-        {
-            const id =pathname.split("/") [3];
-            favorites = favorites.filter( fav => fav.id !=id );
-    
-            console.log("Tentative de suppression de l'ID :", id);
-
-            res.writeHead (200, {"Content-Type":"application/json"})
-            res.end (JSON.stringify({message:"Supprimé"}))
-            return;
-        } 
-        
-    // Pour ne pas que mon navigateur tourne dans le vide 
-    
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ error: "Route non trouvée" }));
-    
-});
-    
-    // Ecoute du serveur sur le port 3000
-server.listen(3000, () => {
-    console.log("Le serveur est lancé sur le port 3000 de http://localhost:3000");
+    /**
+     * GESTION DES ERREURS 404
+     * Exécutée si aucun chemin ne correspond aux routes définies
+     */
+    res.writeHead(404, headers);
+    res.end(JSON.stringify({ 
+        error: "Ressource non trouvée",
+        requestedPath: pathname 
+    }));
 });
 
-
-
+/**
+ * DÉMARRAGE DU SERVEUR
+ */
+const PORT = 3000;
+server.listen(PORT, () => {
+    console.log(`===============================================`);
+    console.log(`SERVEUR CINEVERSE : ACTIF`);
+    console.log(`PORT : ${PORT}`);
+    console.log(`URL DE TEST : http://localhost:${PORT}/api/test`);
+    console.log(`===============================================`);
+});
