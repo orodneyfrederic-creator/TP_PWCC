@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    background: #121212;
+}
+.login-box{
+    width: 500px;
+    height: 650px;
+    background: #d35c5c;
+    color: #1a1a1b;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    padding: 70px 40px;
+    border-radius: 10px;
+}
+img{
+    height: 50px;
+    width: 40px;
+    transform: translateX(450%);
+    margin-bottom: 20px;
+    align-items: center;
+    border-bottom: 20px;
+
+}
+.google-logo{
+    height: 25px;
+    margin-right: 10px;
+    align-items: center;
+    border-bottom: 20px;
+    width: 25px;
+    transform: translate3d(-300% , 500% , -200%);
+    transform: translateX(-15%);
+    transform: translateY(35%);
+}
+
+.login-box h2 {
+    margin-bottom: 20px;
+}
+.login-box button {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 20px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid #000000;
+    transition: 0.5s;
+}
+.login-box button:hover{
+    background-color: #ffffff;
+}
+.login-box hr{
+    border: 0;
+    height: 1px;
+    background-color: #1a1a1b;
+    margin: 5px;
+}
+.login-box span.Or {
+    display: block;
+    width: 40px;
+    margin: auto;
+    transform: translateX(-20%);
+    background: #ee3d3d;
+    font-size: 14px;
+    margin-top: -16px;
+}
+.login-box input{
+    width: 90%;
+    background: transparent;
+    bottom: 2px solid #000000;
+    outline: 0;
+    border: 2px solid #000000;
+    padding: 15px 10px;
+    border-radius: 25px;
+    margin: 10px 0;
+    transform: translateX(-6%);
+    transition: 0.1s;
+}
+.login-box input:focus{
+    border-color: #1a1a1b;
+    background-color: #ffffff;
+}
+.login-box button.next-button {
+    width: 90%;
+    padding: 2px;
+    margin-bottom: 20px;
+    background-color: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    border: 2px solid #000000;
+    transition: 0.5s;
+}
+.login-box button.next-button:hover{
+    background-color: #ffffff;
+}
+
+.login-box span.next-button {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: -15px;
+}
+
+::placeholder{
+    font-weight: 500;
+    color: #333;
+
+}
+.login-box p.signup{
+    text-align: left; 
+    font-size: 14px;
+    color: #000000;
+    margin: 40px 0 50px;
+}
+.login-box p.signup a{
+    color: #1da1f2;
+    text-decoration: none;
+}
