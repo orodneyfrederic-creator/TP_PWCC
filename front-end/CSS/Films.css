@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-@import url("Sections/header.css");
+
 
 :root {
     --poppins: "Poppins", sans-serif;
@@ -14,12 +14,13 @@
     font-family: var(--poppins);
 }
 
-/* Correction du body */
+
 body {
-    min-height: 100vh; /* On utilise min-height pour permettre à la page de grandir */
+    height: 100vh;
     background-color: var(--bgColor);
     margin-top: 2vh;
-    overflow-x: hidden; /* Évite le scroll horizontal bizarre */
+    overflow-x: hidden;
+
 }
 
 li {
@@ -68,7 +69,7 @@ a:hover {
     background: none;
     padding: 0 15px;
     font-size: 14px;
-    color: white;         
+    color: #fff;         
     opacity: 0;
     transition: opacity 0.3s;
 }
@@ -223,7 +224,7 @@ header {
 /* Footer */
 footer {
     margin-top: 20px;
-    background-color: black;
+    background-color:#121212;
     padding: 20px 0;
     color: #fff;
     text-align: center;
@@ -260,14 +261,13 @@ footer .footer-li {
     display: inline;
     align-items: center;
     justify-content: center;
-    background-color: black;
 }
 
 footer .footer-li ul {
     display: inline-flex;
     justify-content: center;
-    margin-top: 2vh;
-    margin-bottom: 50vh;
+    margin-top: 5vh;
+    margin-bottom: 10vh;
     gap: 50px;
 }
 
@@ -312,7 +312,7 @@ footer .social_links li a img {
     display: none;
     position: absolute;
     background-color: #222;
-    min-width: 20px;
+    min-width: 200px;
     max-height: 300px;
     overflow-y: auto;
     list-style: none;

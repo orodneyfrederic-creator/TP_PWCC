@@ -1,8 +1,7 @@
-// Gestion du menu mobile
-document.querySelectorAll(".dropdown").forEach((button) => {  // ✅ Corrigé : .file → .dropdown
+document.querySelectorAll(".file").forEach((button) => {
   button.addEventListener("click", (e) => {
     if (window.innerWidth < 768) {
-      e.preventDefault();
+      e.preventDefault(); // Empêche de suivre le lien
       const content = button.nextElementSibling;
       content.style.visibility =
         content.style.visibility === "visible" ? "hidden" : "visible";
@@ -11,58 +10,41 @@ document.querySelectorAll(".dropdown").forEach((button) => {  // ✅ Corrigé : 
   });
 });
 
-// Lien avec le serveur
-const API_URL = "http://localhost:3000/api";
-const IMG_PATH = "https://image.tmdb.org/t/p/w500";
+// Configuration de l'adresse de ton serveur Node.js
+const API_URL = "http://localhost:3000/api/trending";
 
-const moviesGrid = document.getElementById('movies-grid');
-const searchInput = document.getElementById('movie-name');
-const searchBtn = document.getElementById('search-btn');
-
-async function displayMovies(endpoint) {
+// Fonction pour récupérer et afficher les films
+async function chargerFilms() {
     try {
-        const res = await fetch(`${API_URL}/${endpoint}`);
-        const data = await res.json();
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        const grid = document.getElementById("movies-grid");
 
-        if (!moviesGrid) return;
-        moviesGrid.innerHTML = "";
-
-        //  vérification que data.results existe
-        if (!data.results || data.results.length === 0) {
-            moviesGrid.innerHTML = "<p style='color:white; text-align:center;'>Aucun film trouvé.</p>";
+        if (!grid) {
+            console.error("Erreur : La balise <div id='movies-grid'> est introuvable dans ton HTML !");
             return;
         }
 
+        // On vide la grille avant d'ajouter les films
+        grid.innerHTML = "";
+
         data.results.forEach(movie => {
-            const movieEl = document.createElement('div');
-            movieEl.classList.add('movie-card');
-            movieEl.innerHTML = `
-    <img src="${movie.poster_path ? IMG_PATH + movie.poster_path : 'https://via.placeholder.com/500x750'}" alt="${movie.title}">
-    <div class="movie-info" style="color: white; padding: 10px; text-align: center;">
-        <h4 style="margin: 5px 0;">${movie.title}</h4>
-        <span style="color: #f1c40f;">⭐ ${movie.vote_average.toFixed(1)}</span>
-    </div>
-`;
-            moviesGrid.appendChild(movieEl);
+            const movieCard = document.createElement("div");
+            movieCard.classList.add("movie-card");
+            
+            movieCard.innerHTML = `
+                <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" alt="${movie.title}">
+                <div class="movie-info">
+                    <h4>${movie.title}</h4>
+                    <span>${movie.release_date.split('-')[0]}</span>
+                </div>
+            `;
+            grid.appendChild(movieCard);
         });
-    } catch (err) {
-        console.error("Erreur de connexion au serveur Node :", err);
+    } catch (error) {
+        console.error("Erreur lors du chargement des films :", error);
     }
 }
 
-// Lancement au démarrage
-displayMovies("trending");
-
-// Recherche au clic
-searchBtn?.addEventListener('click', () => {
-    const query = searchInput.value.trim();
-    if (query) displayMovies(`search?q=${query}`);
-});
-
-// ✅ Ajouté : recherche avec la touche Entrée
-searchInput?.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') {
-        const query = searchInput.value.trim();
-        if (query) displayMovies(`search?q=${query}`);
-    }
-});
+// Lancer le chargement dès que la page est prête
+document.addEventListener("DOMContentLoaded", chargerFilms);
