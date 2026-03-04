@@ -61,22 +61,18 @@ const server = http.createServer( async(req, res) => {
     // Route 1 : Tendance pour l'acceuil et l'infinite scroll
 
     if (pathname === "/api/trending" && req.method === "GET") {
-        try{
-            const page = queryData.page || 1 ;
-            const response = await fetch(`${ BASE_URL }/trending/movie/week?api_key=${ TMDB_API_KEY }&language=fr-FR&page=${ page }`);
-            const data = await response.json();
-
-
-            res.writeHead(200, headers);
-            res.end(JSON.stringify(data));
-        } catch (error) {
-            res.writeHead(500, headers);
-            res.end(JSON.stringify({error: "Erreur lors de la récupération des tendances"}));
-        }
-        return;
-
+    try {
+        const page = queryData.page || 1; // Récupère le numéro de page
+        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${TMDB_API_KEY}&language=fr-FR&page=${page}`);
+        const data = await response.json();
+        res.writeHead(200, headers);
+        res.end(JSON.stringify(data));
+    } catch (error) {
+        res.writeHead(500, headers);
+        res.end(JSON.stringify({ error: "Erreur serveur" }));
     }
-
+    return;
+}
 
     // Route 2 : Recherche de films par mot-clé
 

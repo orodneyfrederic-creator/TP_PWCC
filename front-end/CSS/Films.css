@@ -16,11 +16,13 @@
 
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     background-color: var(--bgColor);
-    margin-top: 2vh;
+    margin: 0; 
+    padding-top: 2vh; /* On utilise padding à la place pour garder l'espace visuel */
     overflow-x: hidden;
-
+    display: flex; /* Ajout pour une meilleure gestion du footer */
+    flex-direction: column;
 }
 
 li {
@@ -53,8 +55,7 @@ a:hover {
     padding: 5px;             
     border: 2px solid red; 
     box-sizing: border-box;
-    top: 50%;
-    right: 1%;
+    
 }
 
 .search:hover, 
@@ -337,7 +338,6 @@ footer .social_links li a img {
 }
 
 
-/* Correction du .movies-grid */
 .movies-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -345,10 +345,9 @@ footer .social_links li a img {
     padding: 40px;
     justify-items: center;
     width: 100%;
-    /* Ajout d'une couleur pour être sûr de la voir */
     background-color: #121212; 
+    flex-grow: 1; /* Ajout : permet à la grille de pousser le footer vers le bas */
 }
-
 
 /* Ajout du style pour les cartes de films */ 
 
