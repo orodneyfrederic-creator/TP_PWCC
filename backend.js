@@ -1,135 +1,121 @@
-// Chargement des variables d'environnement depuis le fichers .env (pour la clé API TMDB)
+// On charge les outils pour lire le fichier caché ".env" (là on caches ta clé secrète TMDB)
 require('dotenv').config();
 
-
-// On recupère la clé d'API TMDB 
+// On récupère ta clé API personnelle et l'adresse de base du site TMDB
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 const BASE_URL = "https://api.themoviedb.org/3";
 
+// On importe les outils de base de Node.js pour créer un serveur et lire les adresses web
+const http = require('http'); 
+const url = require('url');   
 
-//  * IMPORTATION DES MODULES NATIFS
-
-const http = require('http'); // Gestion du protocole HTTP
-const url = require('url');   // Analyse des chaînes d'URL
-
-
-//  * CONFIGURATION ET CRÉATION DU SERVEUR
-
-const server = http.createServer( async(req, res) => {
+//  CRÉATION DU SERVEUR 
+// C'est ici qu'on crée la "machine" qui va répondre aux demandes du site
+const server = http.createServer(async (req, res) => {
     
-    // Analyse de la requête entrante
+    // On analyse l'adresse que le navigateur a demandée
     const parsedUrl = url.parse(req.url, true);
     
-    // Normalisation du chemin (suppression des slashs finaux)
+    // On nettoie l'adresse (on enlève les slashs inutiles à la fin)
     const pathname = parsedUrl.pathname.replace(/\/+$/, '') || '/';
     
-    // Extraction des paramètres de recherche (Query string)
+    // On récupère les options après le "?" dans l'adresse (comme le numéro de page ou le nom d'un film)
     const queryData = parsedUrl.query;
 
-   
-    //  * CONFIGURATION DES HEADERS (CORS & CONTENT-TYPE)
-    //  * Autorise les requêtes provenant d'origines différentes (Front-end externe)
-    
+    // --- RÉGLAGES DE SÉCURITÉ (CORS) ---
+    // Ces lignes disent au navigateur : "C'est bon, j'autorise mon site à me demander des infos"
     const headers = {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*", 
-        "Access-Control-Allow-Methods": "GET, OPTIONS",
+        "Content-Type": "application/json", // On répond toujours en format JSON (texte organisé)
+        "Access-Control-Allow-Origin": "*", // On autorise tout le monde à appeler l'API
+        "Access-Control-Allow-Methods": "GET, OPTIONS", // On n'autorise que la lecture
         "Access-Control-Allow-Headers": "Content-Type"
     };
 
-
-    
-
-    
-    //  * GESTION DU PREFLIGHT (MÉTHODE OPTIONS)
-    //  * Réponse automatique aux vérifications de sécurité des navigateurs
-     
-
-
+    // Si le navigateur fait une petite vérification de routine (OPTIONS), on lui répond "OK" direct
     if (req.method === "OPTIONS") {
         res.writeHead(204, headers);
         res.end();
         return;
     }
 
-    // Journalisation des requêtes reçues pour le débogage
-    console.log(`[LOG] Requête : ${req.method} ${pathname}`);
+    // On affiche dans le terminal noir ce que le navigateur demande (pratique pour débugger)
+    console.log(`[LOG] Le site demande : ${req.method} ${pathname}`);
 
-   
-    //  * ROUTAGE DE L'API
+    // --- LE TRI DES DEMANDES (ROUTAGE) ---
 
-    // Route 1 : Tendance pour l'acceuil et l'infinite scroll
-
+    // Route 1 : Récupérer les films à l'affiche (pour l'accueil et le scroll infini)
     if (pathname === "/api/trending" && req.method === "GET") {
-    try {
-        const page = queryData.page || 1; // Récupère le numéro de page
-        const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${TMDB_API_KEY}&language=fr-FR&page=${page}`);
-        const data = await response.json();
-        res.writeHead(200, headers);
-        res.end(JSON.stringify(data));
-    } catch (error) {
-        res.writeHead(500, headers);
-        res.end(JSON.stringify({ error: "Erreur serveur" }));
+        try {
+            // On regarde quelle page on nous demande (par défaut la 1)
+            const page = queryData.page || 1; 
+            // On va chercher les films "tendances" de la semaine sur TMDB avec ta clé
+            const response = await fetch(`${BASE_URL}/trending/movie/week?api_key=${TMDB_API_KEY}&language=fr-FR&page=${page}`);
+            const data = await response.json();
+            
+            // On renvoie la liste des films à ton fichier Javascript.js
+            res.writeHead(200, headers);
+            res.end(JSON.stringify(data));
+        } catch (error) {
+            // Si la connexion avec TMDB plante, on prévient le site
+            res.writeHead(500, headers);
+            res.end(JSON.stringify({ error: "Oups, le serveur a eu un petit problème." }));
+        }
+        return;
     }
-    return;
-}
 
-    // Route 2 : Recherche de films par mot-clé
-
+    // Route 2 : Chercher un film précis par son nom
     if (pathname === "/api/search" && req.method === "GET") {
         try {
-            const searchTerm = queryData.q;
+            const searchTerm = queryData.q; // On récupère le texte tapé dans la barre de recherche
             const page = queryData.page || 1;
 
+            // Si l'utilisateur n'a rien tapé, on s'arrête là
             if (!searchTerm) {
                 res.writeHead(400, headers);
-                res.end(JSON.stringify({ error: "Recherche vide" }));
+                res.end(JSON.stringify({ error: "Tu n'as rien écrit dans la recherche !" }));
                 return;
             }
 
-            const response = await fetch(`${ BASE_URL }/search/movie?api_key=${ TMDB_API_KEY }&language=fr-FR&query=${ encodeURIComponent(searchTerm) }&page=${ page }`);
+            // On demande à TMDB de chercher les films qui correspondent au texte
+            const response = await fetch(`${BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&language=fr-FR&query=${encodeURIComponent(searchTerm)}&page=${page}`);
             const data = await response.json();
 
             res.writeHead(200, headers);
             res.end(JSON.stringify(data));
         } catch (error) {
             res.writeHead(500, headers);
-            res.end(JSON.stringify({ error: "Erreur lors de la recherche de films" }));
+            res.end(JSON.stringify({ error: "La recherche a échoué cette fois-ci." }));
         }
         return;
     }
-     
 
-    // Route de test : Vérification de la disponibilité du service
+    // Route de test : Juste pour voir si le serveur est bien allumé
     if (pathname === "/api/test" && req.method === "GET") { 
         res.writeHead(200, headers);
         res.end(JSON.stringify({ 
             status: "success", 
-            message: "Service API CineVerse opérationnel",
+            message: "Le serveur CineVerse répond parfaitement !",
             timestamp: new Date().toISOString()
         }));
         return;
     }
 
-    
-    //  * GESTION DES ERREURS 404
-    //  * Exécutée si aucun chemin ne correspond aux routes définies
-     
+    // --- ERREUR 404 ---
+    // Si le site demande une adresse qui n'existe pas (ex: /api/pizza)
     res.writeHead(404, headers);
     res.end(JSON.stringify({ 
-        error: "Ressource non trouvée",
+        error: "Cette page d'API n'existe pas.",
         requestedPath: pathname 
     }));
 });
 
-
-//  * DÉMARRAGE DU SERVEUR
- 
+// --- LANCEMENT ---
+// On dit au serveur d'écouter sur le port 3000
 const PORT = 3000;
 server.listen(PORT, () => {
     console.log(`===============================================`);
-    console.log(`SERVEUR CINEVERSE : ACTIF`);
-    console.log(`PORT : ${PORT}`);
-    console.log(`URL DE TEST : http://localhost:${PORT}/api/test`);
+    console.log(`TON SERVEUR EST PRÊT !`);
+    console.log(`Il tourne sur : http://localhost:${PORT}`);
+    console.log(`Tu peux tester ici : http://localhost:${PORT}/api/test`);
     console.log(`===============================================`);
 });
