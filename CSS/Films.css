@@ -66,7 +66,7 @@ a:hover {
     background: none;
     padding: 0 15px;
     font-size: 14px;
-    color: white;         
+    color: #fff;         
     opacity: 0;
     transition: opacity 0.3s;
 }
@@ -221,7 +221,7 @@ header {
 /* Footer */
 footer {
     margin-top: 20px;
-    background-color: black;
+    background-color:#121212;
     padding: 20px 0;
     color: #fff;
     text-align: center;
@@ -230,7 +230,7 @@ footer {
 footer .logo img {
     width: 50px;
     height: 50px;
-    margin-right: 1450px;
+    margin-right: 5px;
     object-fit: contain;
     margin-bottom: 10px;
 }
@@ -258,14 +258,13 @@ footer .footer-li {
     display: inline;
     align-items: center;
     justify-content: center;
-    background-color: black;
 }
 
 footer .footer-li ul {
     display: inline-flex;
     justify-content: center;
-    margin-top: 2vh;
-    margin-bottom: 50vh;
+    margin-top: 5vh;
+    margin-bottom: 10vh;
     gap: 50px;
 }
 
@@ -310,7 +309,7 @@ footer .social_links li a img {
     display: none;
     position: absolute;
     background-color: #222;
-    min-width: 20px;
+    min-width: 200px;
     max-height: 300px;
     overflow-y: auto;
     list-style: none;
