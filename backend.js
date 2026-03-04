@@ -80,22 +80,24 @@ const server = http.createServer( async(req, res) => {
 
     // Route 2 : Recherche de films par mot-clé
 
+  //Vérification de la route ça confirme que c'est bien une requete Get 
     if (pathname === "/api/search" && req.method === "GET") {
         try {
-            const searchTerm = queryData.q;
-            const page = queryData.page || 1;
+            const searchTerm = queryData.q; //c'est une extraction de paramètres
+            const page = queryData.page || 1; // page par défaut
 
             if (!searchTerm) {
-                res.writeHead(400, headers);
+                res.writeHead(400, headers);// Retourne l'erreur 400 si il n'ya  pas de terme de recherche
                 res.end(JSON.stringify({ error: "Recherche vide" }));
                 return;
             }
-
+            // ça  Construit l'URL : https://api.themoviedb.org/3/search/movie?api_key=xxx&language=fr-FR&query=star%20wars&page=1
             const response = await fetch(`${ BASE_URL }/search/movie?api_key=${ TMDB_API_KEY }&language=fr-FR&query=${ encodeURIComponent(searchTerm) }&page=${ page }`);
+            // renvoie les données de TMDB telles quelles quelles(films, trouvés)
             const data = await response.json();
-
             res.writeHead(200, headers);
             res.end(JSON.stringify(data));
+            // ça se charge de la gestion des erreurs
         } catch (error) {
             res.writeHead(500, headers);
             res.end(JSON.stringify({ error: "Erreur lors de la recherche de films" }));
