@@ -462,37 +462,50 @@ footer .social_links li a img {
     }
 }
 
-/* Stylisation des liens (a) à l'intérieur du menu */
-.dropdown-content li a {
+
+main {
+    margin-top: 50px;
+    margin-left: 20px;
     color: white;
-    padding: 12px 20px;
+}
+h1 {
+    color: white;
+    size: 100px;
+}
+/* Style général */
+body {
+    background-color: #121212; /* Fond sombre comme sur l'image */
+    color: white;
+    font-family: sans-serif;
+    padding: 20px;
+}
+h1, h2 {
+    margin-bottom: 15px;
+}
+/* Container de la liste */
+.dropdown-conte {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap; /* Permet de passer à la ligne si besoin */
+    gap: 15px;      /* Espace entre les boutons */
+}
+/* Style de base des "capsules" */
+.dropdown-conte li a {
     text-decoration: none;
-    display: block;
-    font-family: Arial, sans-serif;
-    font-size: 18px;
-    transition: background 0.3s;
+    color: white;
+    font-weight: bold;
+    padding: 10px 25px;
+    border-radius: 50px; /* Bord arrondi style pilule */
+    display: inline-block;
+    border: 2px solid transparent;
+    background-color: rgba(255, 255, 255, 0.1); /* Fond légèrement gris transparent */
+    transition: transform 0.2s, background-color 0.2s;
 }
-/* Effet au survol des liens */
-.dropdown-content li a:hover {
-    background-color: rgba(216, 34, 34, 0.827);
-}
-/* --- PERSONNALISATION DE LA BARRE DE DÉFILEMENT (Scrollbar) --- */
-/* Largeur de la barre */
-.dropdown-content::-webkit-scrollbar {
-    width: 8px;
-}
-/* Fond de la barre */
-.dropdown-content::-webkit-scrollbar-track {
-    background: transparent;
-}
-/* La partie mobile (le "pouce") */
-.dropdown-content::-webkit-scrollbar-thumb {
-    background: #e36262;
-    border-radius: 10px;
-}
-/* Couleur au survol du pouce */
-.dropdown-content::-webkit-scrollbar-thumb:hover {
-    background: #da4545;
+/* Effet au survol */
+.dropdown-conte li a:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .logo {
