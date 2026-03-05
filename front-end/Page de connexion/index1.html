@@ -15,17 +15,17 @@
         <button><img src="google.png"class="google-logo"> Se connecter avec Google</button>
         <hr>
         <center><span class="Or">Ou</span></center>
-        <form>
-            <center><input type="text" placeholder="Adresse e-mail ou nom d'utilisateur"></center>
-             <center><input type="password" placeholder="Mot de passe"></center>
-            <button class="next-button">
-                <span class="next-button">Se connecter</span>
-            </button>
-        </form>
+        <form id="loginForm">
+    <center><input type="text" id="email" placeholder="Adresse e-mail" required></center>
+    <center><input type="password" id="password" placeholder="Mot de passe" required></center>
+    <button type="submit" class="next-button">Se connecter</button>
+   </form>
         <div>
             <center><a class="forgot-passwd" href="index3.html" target="_self"><u>Mot de passe oublié ?</u></a></center><br>
-            <p>Vous n'avez pas de compte ?<a href="index2.html" class="Signup" target="_self">Inscrivez-vous</a></p>
+            <p>Vous n'avez pas de compte ?<a href="../Page inscription/index2.html" class="Signup" target="_self">Inscrivez-vous</a></p>
         </div>
     </div>
 </body>
+
+<script src="login.js" defer></script>
 </html>
