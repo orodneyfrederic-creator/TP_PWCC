@@ -1,3 +1,25 @@
+//Connexion à MySql
+
+const mysql = require('mysql2');
+
+// On crée la connexion à WampServer (par défaut l'utilisateur est 'root' sans mot de passe)
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '', 
+    database: 'cineverse_db'
+});
+
+db.connect((err) => {
+    if (err) {
+        console.error('Erreur de connexion à MySQL :', err);
+        return;
+    }
+    console.log('Connecté à la base de données MySQL de WampServer !');
+});
+
+
+
 // On charge les outils pour lire le fichier caché ".env" (là on caches ta clé secrète TMDB)
 require('dotenv').config();
 
