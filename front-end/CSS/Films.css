@@ -1,0 +1,513 @@
+/* --- LA BASE ET LES POLICES --- */
+
+/* On importe la police "Poppins" depuis Google Fonts pour avoir un look moderne */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Ici on définit nos variables de couleurs (comme ça, si tu veux changer le noir, tu le fais une seule fois ici) */
+:root {
+    --poppins: "Poppins", sans-serif;
+    --bgColor: #121212; /* Le fond sombre du site */
+    --textColor: #FFF;    /* La couleur du texte en blanc */
+}
+
+/* Le sélecteur "*" applique ça à TOUS les éléments du site sans exception */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; /* Pour que les bordures ne fassent pas grandir les boites */
+    font-family: var(--poppins);
+}
+
+/* Configuration du corps de la page */
+body {
+    min-height: 100vh; /* On force le site à faire au moins toute la hauteur de l'écran */
+    background-color: var(--bgColor);
+    margin: 0; 
+    padding-top: 2vh; 
+    overflow-x: hidden; /* Empêche le scroll horizontal (qui fait souvent bugger le mobile) */
+    display: flex; 
+    flex-direction: column; /* On range les éléments les uns sous les autres (header, main, footer) */
+}
+
+/* Style rapide pour les listes et les liens */
+li {
+    list-style: none; /* Enlève les petits points moches des listes */
+    text-align: center;
+}
+
+a {
+    text-decoration: none; /* Enlève le soulignement des liens */
+    color: #FFF;
+    font-size: 1rem;
+}
+
+a:hover {
+    color: crimson; /* Le lien devient rouge quand on passe la souris dessus */
+}
+
+/* --- LA BARRE DE RECHERCHE (Le truc stylé qui s'agrandit) --- */
+.search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: #222;        
+    height: 50px;
+    width: 50px; /* Au repos, c'est juste un petit rond */
+    border-radius: 25px;
+    transition: width 0.5s ease; /* L'animation d'ouverture qui dure 0.5s */
+    overflow: hidden;
+    padding: 5px;             
+    border: 2px solid red; 
+    box-sizing: border-box;
+}
+
+/* Quand on survole la loupe ou qu'on clique dedans, elle s'allonge à 300px */
+.search:hover, 
+.search:focus-within {
+    width: 300px;
+}
+
+/* Le texte qu'on tape dans la barre de recherche */
+#movie-name {
+    flex: 1;                 
+    border: none;
+    outline: none;
+    background: none;
+    padding: 0 15px;
+    font-size: 14px;
+    color: #fff;         
+    opacity: 0; /* Caché par défaut... */
+    transition: opacity 0.3s;
+}
+
+/* ... et il devient visible seulement quand la barre est agrandie */
+.search:hover #movie-name,
+.search:focus-within #movie-name {
+    opacity: 1;
+}
+
+/* Le bouton (loupe) à l'intérieur de la barre */
+#search-btn {
+    min-width: 30px;     
+    height: 30px;
+    border: none;
+    background: #222;       
+    border-radius: 50%;      
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    order: 2; /* Pour qu'il reste à droite du texte */
+    flex-shrink: 5;       
+}
+
+#search-btn img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1); /* Transforme l'icône noire en icône blanche */
+}
+
+/* --- LA BANNIÈRE PRINCIPALE (Cover) --- */
+.cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* L'image remplit la zone sans être écrasée */
+    border-radius: 20px;
+}
+
+.cover {
+    position: relative;
+    width: 90%;
+    height: 80vh; /* Elle prend 80% de la hauteur de l'écran */
+    margin-top: 20px;
+    border-radius: 30px;
+    overflow: hidden;
+    left: 65px; /* Petit décalage pour l'esthétique */
+}
+
+/* Le texte (Titre + Description) qui flotte sur l'image */
+.text {
+    position: absolute;
+    top: 50%;
+    left: 25%;
+    right: 30%;
+    transform: translate(-50%, -50%); /* Technique pour centrer parfaitement */
+    color: white;
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Ombre pour que le texte soit lisible */
+}
+
+.text h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+    margin-left: 50px;
+}
+
+.text p {
+    font-size: 18px;
+    line-height: 1.5;
+    max-width: 600px;
+    text-align: justify;
+}
+
+/* --- LE MENU DU HAUT (Navigation) --- */
+nav {
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+nav .logo img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+}
+
+nav .search {
+    display: flex;
+    gap: 10px; 
+}
+
+/* Style des inputs et boutons dans le nav */
+nav .search input,
+nav .search button {
+    padding: 5px 20px;
+    font-size: 1rem;
+    outline: none;
+    border: 1px solid #898989;
+    border-radius: 0.3em;
+    color: var(--textColor);
+    background-color: var(--bgColor);
+}
+
+nav .search input {
+    min-width: 250px;
+}
+
+nav .search button {
+    cursor: pointer;
+}
+
+header {
+    position: relative;
+    padding: 0 2rem;
+}
+
+/* La barre de navigation grise arrondie */
+.navbar {
+    width: auto;
+    height: 50px;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #333;
+    padding: 0 30px;
+    border-radius: 50px;
+}
+
+.navbar .links {
+    display: flex;
+    gap: 0.8rem;
+}
+
+/* Le bouton rouge d'action (ex: Connexion) */
+.action_btn {
+    background-color: red;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    border: 2px solid black;
+    outline: none;
+    border-radius: 20px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: -10px;
+}
+
+.action_btn:hover {
+    scale: 105%; /* Le bouton gonfle un peu au survol */
+    color: black;
+}
+
+/* --- LE PIED DE PAGE (Footer) --- */
+footer {
+    margin-top: 20px;
+    background-color:#121212;
+    padding: 20px 0;
+    color: #fff;
+    text-align: center;
+}
+
+footer .logo img {
+    width: 50px;
+    height: 50px;
+    margin-right: 1450px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* Les icônes de réseaux sociaux */
+footer .social-icons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 10px;
+    margin-right: auto;
+}
+
+footer .footer-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #222;
+}
+
+/* La zone de liens dans le footer */
+footer .footer-li {
+    width: 500px;
+    height: 200px;
+    max-width: 1200px;
+    margin: 30px auto;
+    display: inline;
+    align-items: center;
+    justify-content: center;
+}
+
+footer .footer-li ul {
+    display: inline-flex;
+    justify-content: center;
+    margin-top: 5vh;
+    margin-bottom: 10vh;
+    gap: 50px;
+}
+
+footer .social_links {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    gap: 30px;
+}
+
+footer .social_links li a img {
+    width: 20px;
+    height: 20px;
+}
+
+/* --- LIENS ET MENUS DÉROULANTS --- */
+.links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.links li {
+    position: relative;
+    margin-right: 20px;
+}
+
+.links a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 12px;
+    display: block;
+}
+
+.links a:hover {
+    background: red;
+    border-radius: 20px;
+}
+
+/* Le menu qui descend quand on passe sur "Genres" ou autre */
+.dropdown-content {
+    display: none; /* Caché par défaut */
+    position: absolute;
+    background-color: #222;
+    min-width: 200px;
+    max-height: 300px;
+    overflow-y: auto; /* Permet de scroller si la liste est trop longue */
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 1200; /* Pour qu'il passe au-dessus du reste du site */
+    border-radius: 15px;
+}
+
+/* Affiche le menu quand on survole le parent */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.dropdown-content li a {
+    padding: 10px;
+    color: white;
+}
+
+.dropdown-content li a:hover {
+    background-color: red;
+    border-radius: 20px;
+}
+
+
+/* --- LA GRILLE DE FILMS (L'endroit où les films s'affichent) --- */
+.movies-grid {
+    display: grid; 
+    /* Crée automatiquement des colonnes de 200px qui s'adaptent à l'écran */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 25px;
+    padding: 40px;
+    justify-items: center;
+    width: 100%;
+    background-color: #121212; 
+}
+
+
+/* Look d'une seule affiche de film */ 
+.movie-card {
+    background: #1e1e1e;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 200px;
+    transition: transform 0.3s; /* Petit effet de mouvement fluide */
+}
+
+/* Le film "saute" un peu vers l'avant quand on le survole */
+.movie-card:hover {
+    transform: scale(1.05);
+}
+
+.movie-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+/* Le petit texte sous l'affiche du film */
+.movie-info {
+    padding: 10px;
+    color: white;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+/* --- ADAPTATION POUR MOBILE ET TABLETTE (Responsive) --- */
+
+/* Pour les écrans moyens (tablettes) */
+@media screen and (max-width: 992px) {
+    .cover {
+        height: 60vh;
+        width: 95%;
+        left: 2.5%;
+    }
+}
+
+/* Pour les écrans petits (smartphones) */
+@media screen and (max-width: 768px) {
+    nav {
+        padding: 0 1rem;
+        flex-wrap: wrap; /* On permet aux éléments de passer à la ligne */
+    }
+
+    .search {
+        right: 0; 
+        margin: 10px 0;
+    }
+
+    .search:hover, 
+    .search:focus-within {
+        width: 200px; /* Moins large sur mobile */
+    }
+
+    .navbar {
+        height: auto;
+        padding: 10px 20px;
+    }
+
+    .navbar .links {
+        display: none; /* On cache souvent les menus trop longs sur petit mobile */
+    }
+
+    /* Les films sont plus petits sur mobile pour en voir plus d'un coup */
+    .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 15px;
+        padding: 20px;
+    }
+
+    .movie-card {
+        width: 100%;
+    }
+
+    .movie-card img {
+        height: 200px;
+    }
+
+    /* Le texte sur la bannière devient plus compact */
+    .text {
+        width: 100%;
+        left: 0;
+        transform: translateY(-50%);
+        padding: 20px;
+        text-align: center;
+    }
+
+    .text p {
+        font-size: 14px;
+        max-width: 100%;
+    }
+}
+
+/* Stylisation des liens (a) à l'intérieur du menu */
+.dropdown-content li a {
+    color: white;
+    padding: 12px 20px;
+    text-decoration: none;
+    display: block;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    transition: background 0.3s;
+}
+/* Effet au survol des liens */
+.dropdown-content li a:hover {
+    background-color: rgba(216, 34, 34, 0.827);
+}
+/* --- PERSONNALISATION DE LA BARRE DE DÉFILEMENT (Scrollbar) --- */
+/* Largeur de la barre */
+.dropdown-content::-webkit-scrollbar {
+    width: 8px;
+}
+/* Fond de la barre */
+.dropdown-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+/* La partie mobile (le "pouce") */
+.dropdown-content::-webkit-scrollbar-thumb {
+    background: #e36262;
+    border-radius: 10px;
+}
+/* Couleur au survol du pouce */
+.dropdown-content::-webkit-scrollbar-thumb:hover {
+    background: #da4545;
+}
+
+.logo {
+    display: flex;          /* Aligne les éléments horizontalement */
+    align-items: center;    /* Centre verticalement le texte par rapport à l'image */
+    gap: 10px;              /* Ajoute un espace entre l'image et le texte */
+}
+
+.logo img {
+    height: 40px;           /* Ajustez la taille selon vos besoins */
+    width: auto;
+}
+
+.logo p {
+    margin: 0;              /* Supprime les marges par défaut du paragraphe pour un alignement parfait */
+    font-weight: bold;      /* Pour correspondre au style de l'image */
+    color: white;           /* Si votre fond est noir */
+}
